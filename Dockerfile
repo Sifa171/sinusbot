@@ -59,6 +59,7 @@ RUN groupadd -g "$SINUS_GROUP" sinusbot && \
     rm -rf /tmp/* /var/tmp/*
 
 COPY entrypoint.sh /entrypoint.sh
+CMD chmod +x /entrypoint.sh
 COPY youtube-dl-speedpatched /usr/local/bin/youtube-dl-speedpatched
 
 USER sinusbot
