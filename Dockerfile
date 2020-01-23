@@ -56,10 +56,11 @@ RUN groupadd -g "$SINUS_GROUP" sinusbot && \
     echo "YoutubeDLPath = \"$YTDL_BIN-speedpatched\"" >> "$SINUS_DIR/config.ini" && \
     chown -fR sinusbot:sinusbot "$SINUS_DIR" && \
     apt-get -q clean all && \
+    echo "TEST" \
     rm -rf /tmp/* /var/tmp/*
 
 
-# RUN  chown -R sinusbot:sinusbot /opt/sinusbot
+RUN  chmod -R 777 "$SINUS_DIR"
 COPY youtube-dl-speedpatched /usr/local/bin/youtube-dl-speedpatched
 
 USER sinusbot
