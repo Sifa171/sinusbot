@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sinusbot
+  labels:
+    app: sinusbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sinusbot
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sinusbot
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
+        - name: scripts
+          persistentVolumeClaim:
+            claimName: scripts
+        - name: sinusbot-config
+          configMap:
+            name: sinusbot-config
+            defaultMode: 420
+      containers:
+        - name: sinusbot
+          image: quay.io/sifa/sinusbot
+          ports:
+            - containerPort: 8087
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: data
+              mountPath: /sinusbot/data
+            - name: scripts
+              mountPath: /sinusbot/scripts
+            - name: sinusbot-config
+              mountPath: /sinusbot/config
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
