@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sinusbot-scripts
+spec:
+  capacity:
+    storage: 5Gi 
+  accessModes:
+  - ReadWriteMany 
+  nfs: 
+    path: /data/nfsshare/sinusbot-scripts
+    server: 192.168.50.16
+  persistentVolumeReclaimPolicy: Retain
