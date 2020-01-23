@@ -58,11 +58,12 @@ RUN groupadd -g "$SINUS_GROUP" sinusbot && \
     apt-get -q clean all && \
     rm -rf /tmp/* /var/tmp/*
 
-COPY entrypoint.sh /entrypoint.sh
+
 RUN  chown -R sinusbot:sinusbot /opt/sinusbot
 COPY youtube-dl-speedpatched /usr/local/bin/youtube-dl-speedpatched
 
 USER sinusbot
+COPY entrypoint.sh /entrypoint.sh
 WORKDIR "$SINUS_DIR"
 
 ENTRYPOINT ["/entrypoint.sh"]
